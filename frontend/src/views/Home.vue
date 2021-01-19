@@ -97,7 +97,7 @@
                         <v-icon small>mdi-pencil</v-icon>
                       </v-btn>
                       <v-btn color="pink" fab x-small @click="deletePost(item)" outlined>
-                        <v-icon small>mdi-deleted</v-icon>
+                        <v-icon small>mdi-delete</v-icon>
                       </v-btn>
                     </template>
                     <template v-slot:no-results>
@@ -109,6 +109,21 @@
                 </v-card>
               </v-container>
             </v-card>
+
+            <v-snackbar
+              v-model="snackbar"
+              top
+              right
+              :color="color"
+              >
+              {{ text }}
+              <v-btn
+                color="black"
+                text
+                @click="snackbar=false"
+                >Fermer</v-btn>
+            </v-snackbar>
+
           </v-col>
         </v-row>
       </v-container>
@@ -138,10 +153,14 @@ export default {
     mini: false,
     dialog: false,
     fab: false,
+    search: '',
+    snackbar: 'false',
+    text: '',
+    color: '',
     posts: [],
     headers: [
       {text: 'Name', value: 'name', sortable: true},
-      {text: 'Description', description: 'name', sortable: false},
+      {text: 'Description', value: 'description', sortable: false},
       {text: 'Action', value: 'actions', sortable: true, width: '180px'},
     ],
     postData: {
