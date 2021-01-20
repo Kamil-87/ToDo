@@ -1,11 +1,12 @@
-let express = require('express'),
-    cors = require('cors'),
-    mongoose = require('mongoose'),
-    database = require('database'),
-    bodyParser = require('body-parser');
+const express = require('express')
+const cors = require('cors')
+const mongoose = require('mongoose')
+const database = require('./database')
+const bodyParser = require('body-parser')
+
 
 // Connect mongoDB
-mongoose.Promise = global.Promise;
+promise = global.Promise
 mongoose.connect(database.db, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -27,10 +28,30 @@ app.use(cors());
 app.use('/api', postAPI)
 
 //create port
-const port = process.env.PORT || 4000;
-const server = app.listen(port, () => {
-  console.log('Connected to port ' + port)
+const PORT = process.env.PORT || 4000;
+
+const server = app.listen(PORT, () => {
+  console.log(`Connected to port ${PORT}`)
 })
+
+/*async function start() {
+  try {
+    const url = `mongodb+srv://kamilk:nqXNwT4zSMKpvddC@cluster0.llvf1.mongodb.net/todo`;
+
+    await mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true})
+    app.listen(PORT, () => {
+      console.log(`Connected to port ${PORT}`)
+    })
+  } catch (e) {
+    console.log(e)
+  }
+}
+start();
+
+const password = 'nqXNwT4zSMKpvddC';
+const dbname = 'mevn';
+
+*/
 
 //error handler
 app.use(function (err, req, res, next) {

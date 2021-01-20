@@ -1,3 +1,3 @@
 module.exports = {
-  db: 'mongodb://localhost:27017/mevnv'
+  db: `mongodb+srv://kamilk:nqXNwT4zSMKpvddC@cluster0.llvf1.mongodb.net/todo`
 }

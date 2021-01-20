@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const {Schema, model} = require('mongoose');
 
 let postSchema = new Schema({
   name: {
-    type: String
+    type: String,
+    required: true
   },
   description: {
     type: String
@@ -12,4 +12,4 @@ let postSchema = new Schema({
   collection: 'posts'
 })
 
-module.exports = mongoose.model('Post', postSchema)
+module.exports = model('Post', postSchema)

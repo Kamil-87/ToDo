@@ -1,7 +1,6 @@
-const express = require('express');
-const postRoute = express.Router();
-
-let PostModel = require('../models/Post');
+const {Router} = require('express');
+const PostModel = require('../models/Post');
+const postRoute = Router();
 
 //create post
 postRoute.route('/create-post').post((req,res,next) => {
