@@ -17,6 +17,7 @@
         <v-icon>mdi-logout</v-icon>
       </v-btn>
     </v-app-bar>
+
     <v-main>
       <v-container
           class="scroll-y"
@@ -37,6 +38,7 @@
                 </v-btn>
                 <v-toolbar-title>Posts</v-toolbar-title>
                 <v-spacer></v-spacer>
+
                 <v-dialog v-model="dialog" persistent max-width="800px">
                   <template v-slot:activator="{ on }">
                     <v-btn color="red" v-on="on" outlined="">
@@ -72,7 +74,9 @@
                     </v-form>
                   </v-card>
                 </v-dialog>
+
               </v-app-bar>
+
               <v-container>
                 <v-card class="mx-auto elevation-19">
                   <v-card-title>
@@ -86,25 +90,30 @@
                       color="#2C3A47"
                       ></v-text-field>
                   </v-card-title>
+
                   <v-data-table
                     item-key="id"
                     :headers="headers"
                     :items="posts"
                     :search="search"
                     >
+
                     <template v-slot:item.actions="{item}">
                       <v-btn color="success" class="mx-2" fab x-small @click="editPost(item)" outlined>
                         <v-icon small>mdi-pencil</v-icon>
                       </v-btn>
+
                       <v-btn color="pink" fab x-small @click="deletePost(item)" outlined>
                         <v-icon small>mdi-delete</v-icon>
                       </v-btn>
                     </template>
+
                     <template v-slot:no-results>
                       <v-alert :value="true" color="pink" icon="warning" dark>
                         Your search {{ search }} does not exist.
                       </v-alert>
                     </template>
+
                   </v-data-table>
                 </v-card>
               </v-container>
@@ -128,6 +137,7 @@
         </v-row>
       </v-container>
     </v-main>
+
     <v-btn
         v-scroll="onScroll"
         bottom
@@ -140,9 +150,12 @@
     >
       <v-icon>mdi-chevron-up</v-icon>
     </v-btn>
+
   </v-app>
 </template>
+
 <script>
+import axios from 'axios';
 export default {
   props: {
     source: {
@@ -173,7 +186,24 @@ export default {
     },
     editedIndex: -1
   }),
+  watch: {
+    dialog (val) {
+      val || this.close()
+    }
+  },
+  mounted() {
+    this.loadPosts();
+  },
   methods: {
+    loadPosts: async function() {
+      let apiURL = `http://localhost:4000/api`;
+      axios.get(apiURL).then(res => {
+        this.posts = res.data
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+
     onScroll(e) {
       if (typeof window === 'undefined') return
       const top = window.pageYOffset || e.target.scrollTop || 0
@@ -188,6 +218,32 @@ export default {
         this.postData = Object.assign({}, this.default)
         this.editedIndex = -1
       }, 300)
+    },
+
+    savePost: async function() {
+      if(this.editedIndex > -1) {
+        console.log('updated')
+      } else {
+        this.createPost()
+      }
+    },
+
+    createPost() {
+      let apiURL = 'http://localhost:4000/api/create-post'
+      axios.post(apiURL, this.postData).then(() => {
+        this.postData = {
+          name: '',
+          description: '',
+        }
+        this.close();
+        this.loadPosts()
+        this.color = 'success'
+        this.text = 'Post has been successfully saved'
+        this.snackbar = true
+      }).catch(error => {
+        console.log(error)
+      })
+
     }
   }
 }
