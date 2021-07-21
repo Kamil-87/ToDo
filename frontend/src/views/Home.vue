@@ -18,6 +18,8 @@
       </v-btn>
     </v-app-bar>
 
+    <p>Token github verification</p>
+
     <v-main>
       <v-container
           class="scroll-y"
